@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import fs from "fs";
 import { promisify } from "util";
 import stream from "stream";
-import { uploadErrors } from "../utils/error.utils";
+import { uploadErrors } from "../utils/errors.utils";
 
 const ObjectId = mongoose.Types.ObjectId;
 const pipeline = promisify(stream.pipeline);

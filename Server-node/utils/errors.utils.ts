@@ -1,4 +1,4 @@
-module.exports.signUpErrors = (err:any) => {
+export const signUpErrors = (err:any) => {
     let errors = {name: "", email:"", password:""}
 
     if (err.message.includes("name"))
@@ -19,7 +19,7 @@ module.exports.signUpErrors = (err:any) => {
     return errors
 }
 
-module.exports.signInErrors = (err:any) => {
+export const signInErrors = (err:any) => {
     let errors = {email:"", password: ""}
 
     if(err.message.includes("email"))
@@ -29,7 +29,7 @@ module.exports.signInErrors = (err:any) => {
         errors.password = "Mot de passe inconnu"
 }
 
-module.exports.uploadErrors = (err:any) => {
+export const uploadErrors = (err:any) => {
     let errors = {format:"", maxSize:""}
 
     if (err.message.includes("invalid file"))
