@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { articleModel } from "../Models/article.model";
-import userModel from "../Models/user.model";
+import { userModel } from "../models/userModel";
 import mongoose from "mongoose";
 import fs from "fs";
 import { promisify } from "util";
