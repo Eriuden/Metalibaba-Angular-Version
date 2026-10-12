@@ -15,7 +15,8 @@ export interface User {
   _id: string;
   name: string;
   email: string,
-  password: string
+  password: string,
+  address : string
 }
 
 
@@ -77,6 +78,35 @@ export const UserStore = signalStore(
             http.get<User>(`${apiUrl}/${userId}`).pipe(
               tap({
                 next: (user) => patchState(store, {selectedUser: user, loading: false}),
+                error: (err) => handleError(err)
+              })
+            )
+          )
+        )
+      ),
+
+      updateArticle: rxMethod<{
+        userId: string;
+        name: string;
+        address: string
+
+      }>(
+        pipe(
+          switchMap(({ userId, name, address }) =>
+            http.put(`${apiUrl}/${userId}`, { userId, name, address }).pipe(
+              tap({
+                next: () => {
+                  patchState(store, (state:any) => ({
+                    articles: state.articles.map((u:any) =>
+                      u._id === userId
+                        ? { ...u, name, address }
+                        : u
+                    ),
+                    selectedUser: state.selecteUser?._id === userId
+                      ? { ...state.selectedUser, name, address }
+                      : state.selectedUser
+                  }));
+                },
                 error: (err) => handleError(err)
               })
             )
