@@ -16,7 +16,8 @@ export interface User {
   name: string;
   email: string,
   password: string,
-  address : string
+  address : string,
+  picture: string
 }
 
 
@@ -109,6 +110,35 @@ export const UserStore = signalStore(
                 },
                 error: (err) => handleError(err)
               })
+            )
+          )
+        )
+      ),
+
+      uploadUserPicture: rxMethod<{ data: FormData; articleId: string }>(
+        pipe(
+          switchMap(({ data, userId }) =>
+            http.post<{ picture?: string; errors?: any }>(`${apiUrl}/upload-userPic`, data).pipe(
+              switchMap((res) => {
+                if (res.errors) {
+                  patchState(store, { error: res.errors });
+                  return of(null);
+                }
+
+                return http.get<User>(`${apiUrl}/${userId}`).pipe(
+                  tap((user) => {
+                    patchState(store, (state:any) => ({
+                      users: state.users.map((a:any) =>
+                        a._id === userId ? { ...a, picture: user.picture } : a
+                      ),
+                      selectedArticle: state.selectedArticle?._id === userId
+                        ? { ...state.selectedArticle, picture: user.picture }
+                        : state.selectedArticle
+                    }));
+                  })
+                );
+              }),
+              catchError((err) => handleError(err))
             )
           )
         )

@@ -3,6 +3,7 @@ import { isEmail } from "validator";
 import bcrypt from "bcrypt";
 
 export interface IUser extends Document {
+  picture: string,
   name: string;
   email: string;
   password: string;
@@ -16,6 +17,9 @@ interface IUserModel extends Model<IUser> {
 
 const userSchema = new Schema<IUser, IUserModel>(
   {
+    picture: {            
+            required: true 
+    },
     name: {
       type: String,
       required: true,
@@ -45,7 +49,7 @@ const userSchema = new Schema<IUser, IUserModel>(
   }
 );
 
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function (next:any) {
   const user = this as IUser;
 
   if (!user.isModified("password")) {
