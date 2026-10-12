@@ -309,7 +309,7 @@ export const ArticleStore = signalStore(
         commenterName: string;
       }>(
         pipe(
-          switchMap((payload) =>
+          switchMap((payload:any) =>
             http.patch(`${apiUrl}/comment-article/${payload.articleId}`, {
               commentId: payload.commentId,
               commenterId: payload.commenterId,
