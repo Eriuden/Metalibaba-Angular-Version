@@ -143,6 +143,26 @@ export const UserStore = signalStore(
           )
         )
       ),
+
+      deleteUser: rxMethod<string>(
+        pipe(
+          switchMap((userId) =>
+            http.delete(`${apiUrl}/${userId}`).pipe(
+              tap({
+                next: () => {
+                  patchState(store, (state:any) => ({
+                    users: state.users.filter((a:any) => a._id !== userId),
+                    selectedUser: state.selectedUser?._id === userId
+                      ? null
+                      : state.selectedUser
+                  }));
+                },
+                error: (err) => handleError(err)
+              })
+            )
+          )
+        )
+      ),
     }
   })
 )
