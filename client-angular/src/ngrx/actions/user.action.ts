@@ -163,6 +163,20 @@ export const UserStore = signalStore(
           )
         )
       ),
+
+      updatePassword: rxMethod<{ userId: string; password: string }>(
+        pipe(
+          switchMap(({ userId, password }) =>
+            http.put(`${apiUrl}/user/${userId}`, { password }).pipe(
+              tap({
+                next: () => patchState(store, { error: null }),
+                error: (err) => patchState(store, {error: err?.error?.message || 'Erreur lors de la mise à jour du mot de passe'})
+              })
+            )
+          )
+        )
+      ),
+
     }
   })
 )
