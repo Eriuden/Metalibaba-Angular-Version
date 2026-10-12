@@ -10,7 +10,6 @@ import { computed } from '@angular/core';
 export interface CartItem {
   id: string;
   quantity: number;
-  // tu peux ajouter d'autres propriétés (name, price, picture...)
   [key: string]: any;
 }
 
