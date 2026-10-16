@@ -124,7 +124,7 @@ export const articleReducer = createReducer(
   })),
 
   // ===== Likes / Dislikes =====
-  on(ArticleActions.likeArticle, (state:any, { articleId, userId }:commentId) => ({
+  on(ArticleActions.likeArticleSuccess, (state:any, { articleId, userId }:commentId) => ({
     ...state,
     articles: state.articles.map((article:any) =>
       article._id === articleId
@@ -139,7 +139,7 @@ export const articleReducer = createReducer(
     )
   })),
 
-  on(ArticleActions.unlikeArticle, (state:any, { articleId, userId }:commentId) => ({
+  on(ArticleActions.unlikeArticleSuccess, (state:any, { articleId, userId }:commentId) => ({
     ...state,
     articles: state.articles.map((article:any) =>
       article._id === articleId
@@ -151,7 +151,7 @@ export const articleReducer = createReducer(
     )
   })),
 
-  on(ArticleActions.dislikeArticle, (state:any, { articleId, userId }:commentId) => ({
+  on(ArticleActions.dislikeArticleSuccess, (state:any, { articleId, userId }:commentId) => ({
     ...state,
     articles: state.articles.map((article:any) =>
       article._id === articleId
@@ -166,7 +166,7 @@ export const articleReducer = createReducer(
     )
   })),
 
-  on(ArticleActions.undislikeArticle, (state:any, { articleId, userId }:commentId) => ({
+  on(ArticleActions.undislikeArticleSuccess, (state:any, { articleId, userId }:commentId) => ({
     ...state,
     articles: state.articles.map((article:any) =>
       article._id === articleId
