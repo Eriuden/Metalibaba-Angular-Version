@@ -29,7 +29,7 @@ type Article = {
     dislikers:[string],
 }
 
-type commentId = {
+type likeId = {
   articleId: string,
   userId: string
 }
@@ -101,6 +101,11 @@ export const articleReducer = createReducer(
         ? { ...state.selectedArticle, name, typeArticle, groupe, price }
         : state.selectedArticle
   })),
+  on(ArticleActions.updateArticleFailure, (state:any, { error }:any) => ({
+    ...state,
+    loading: false,
+    error
+  })),
 
   // ===== Upload picture =====
   on(ArticleActions.uploadArticlePictureSuccess, (state:any, { picture }:Article) => ({
@@ -114,17 +119,27 @@ export const articleReducer = createReducer(
         : article
     )
   })),
+  on(ArticleActions.uploadArticlePictureFailure, (state:any, { error }:any) => ({
+    ...state,
+    loading: false,
+    error
+  })),
 
   // ===== Suppression =====
-  on(ArticleActions.deleteArticleSuccess, (state:any, { articleId }:commentId) => ({
+  on(ArticleActions.deleteArticleSuccess, (state:any, { articleId }:Article) => ({
     ...state,
     articles: state.articles.filter((article:any) => article._id !== articleId),
     selectedArticle:
       state.selectedArticle?._id === articleId ? null : state.selectedArticle
   })),
+  on(ArticleActions.deleteArticleFailure, (state:any, { error }:any) => ({
+    ...state,
+    loading: false,
+    error
+  })),
 
   // ===== Likes / Dislikes =====
-  on(ArticleActions.likeArticleSuccess, (state:any, { articleId, userId }:commentId) => ({
+  on(ArticleActions.likeArticleSuccess, (state:any, { articleId, userId }:likeId) => ({
     ...state,
     articles: state.articles.map((article:any) =>
       article._id === articleId
@@ -138,8 +153,13 @@ export const articleReducer = createReducer(
         : article
     )
   })),
+  on(ArticleActions.likeArticleFailure, (state:any, { error }:any) => ({
+    ...state,
+    loading: false,
+    error
+  })),
 
-  on(ArticleActions.unlikeArticleSuccess, (state:any, { articleId, userId }:commentId) => ({
+  on(ArticleActions.unlikeArticleSuccess, (state:any, { articleId, userId }:likeId) => ({
     ...state,
     articles: state.articles.map((article:any) =>
       article._id === articleId
@@ -150,8 +170,13 @@ export const articleReducer = createReducer(
         : article
     )
   })),
+  on(ArticleActions.unlikeArticleFailure, (state:any, { error }:any) => ({
+    ...state,
+    loading: false,
+    error
+  })),
 
-  on(ArticleActions.dislikeArticleSuccess, (state:any, { articleId, userId }:commentId) => ({
+  on(ArticleActions.dislikeArticleSuccess, (state:any, { articleId, userId }:likeId) => ({
     ...state,
     articles: state.articles.map((article:any) =>
       article._id === articleId
@@ -165,8 +190,13 @@ export const articleReducer = createReducer(
         : article
     )
   })),
+  on(ArticleActions.dislikeArticleFailure, (state:any, { error }:any) => ({
+    ...state,
+    loading: false,
+    error
+  })),
 
-  on(ArticleActions.undislikeArticleSuccess, (state:any, { articleId, userId }:commentId) => ({
+  on(ArticleActions.undislikeArticleSuccess, (state:any, { articleId, userId }:likeId) => ({
     ...state,
     articles: state.articles.map((article:any) =>
       article._id === articleId
@@ -178,3 +208,8 @@ export const articleReducer = createReducer(
     )
   })),
 );
+on(ArticleActions.undislikeArticleFailure, (state:any, { error }:any) => ({
+    ...state,
+    loading: false,
+    error
+  }))
