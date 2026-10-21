@@ -34,6 +34,13 @@ type likeId = {
   userId: string
 }
 
+type comment = {
+  articleId: string,
+  commentId: string,
+  commenterId: string,
+  text: string
+}
+
 // ========== Reducer ==========
 export const articleReducer = createReducer(
   initialState,
@@ -129,6 +136,7 @@ export const articleReducer = createReducer(
   on(ArticleActions.deleteArticleSuccess, (state:any, { articleId }:Article) => ({
     ...state,
     articles: state.articles.filter((article:any) => article._id !== articleId),
+    //"déselectionner" l'article pour éviter des bugs potentiels
     selectedArticle:
       state.selectedArticle?._id === articleId ? null : state.selectedArticle
   })),
@@ -209,6 +217,42 @@ export const articleReducer = createReducer(
   })),
 );
 on(ArticleActions.undislikeArticleFailure, (state:any, { error }:any) => ({
+    ...state,
+    loading: false,
+    error
+  }))
+
+// ===== Comment =====
+
+on (ArticleActions.addComment, (state:any) => ({
+  ...state,
+  loading: true,
+  error: false
+}))
+
+on(ArticleActions.addCommentSuccess, (state:any) => ({
+    ...state,
+    loading: false
+  })),
+on(ArticleActions.addCommentFailure, (state:any, { error }:any) => ({
+  ...state,
+  loading: false,
+  error
+}))
+
+on(ArticleActions.updateCommentSuccess, (state:any, { articleId, commentId, commenterId, text }:comment) => ({
+    ...state,
+    comments: state.comments.map((comment:any) =>
+      comment._id === commentId
+        ? { ...comment, articleId, commenterId, text }
+        : comment
+    ),
+    selectedComment:
+      state.selectedComment?._id === commentId
+        ? { ...state.selectedComment, articleId, commentId, commenterId, text }
+        : state.selectedComment
+  })),
+  on(ArticleActions.updateCommentFailure, (state:any, { error }:any) => ({
     ...state,
     loading: false,
     error
