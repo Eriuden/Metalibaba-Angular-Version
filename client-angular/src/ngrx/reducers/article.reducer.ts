@@ -257,3 +257,16 @@ on(ArticleActions.updateCommentSuccess, (state:any, { articleId, commentId, comm
     loading: false,
     error
   }))
+
+  on(ArticleActions.deleteCommentSuccess, (state:any, { commentId }:comment) => ({
+    ...state,
+    comments: state.comments.filter((comment:any) => comment._id !== commentId),
+    //"déselectionner" l'article pour éviter des bugs potentiels
+    selectedComment:
+      state.selectedComment?._id === commentId ? null : state.selectedComment
+  })),
+  on(ArticleActions.deleteCommentFailure, (state:any, { error }:any) => ({
+    ...state,
+    loading: false,
+    error
+  }))
